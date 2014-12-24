@@ -150,6 +150,32 @@
       if (player.options.playlistposition == 'bottom') {
         playlist.css('top', player.options.audioHeight + 'px');
       }
+      else if (player.options.playlistposition == 'side') {
+        // Added by BEN
+        var t = this;
+        t.media.addEventListener('play', function(e) {
+          var width = t.width;
+          playlist.css('left', width + 'px');
+        }, false);
+        var fullscreenListener = function(e) {
+          if (player.options.playlist) {
+            player.options.playlist = !player.options.playlist;
+            $(t.media).trigger('mep-playlisttoggle', [player.options.playlist]);
+            t.layers.children('.mejs-playlist').hide();
+            t.playlistToggle.removeClass('mejs-hide-playlist').addClass('mejs-show-playlist');
+            console.log('hide playlist');
+          }
+          if (!window.screenTop && !window.screenY) {
+            //console.log('not fullscreen');
+          } else {
+            //console.log('fullscreen');
+          }
+         }
+       document.addEventListener('webkitfullscreenchange', fullscreenListener);
+       document.addEventListener('mozfullscreenchange', fullscreenListener);
+       document.addEventListener('fullscreenchange', fullscreenListener);
+       // End Ben
+      }
       else {
         playlist.css('bottom', player.options.audioHeight + 'px');
       }
